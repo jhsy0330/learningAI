@@ -160,3 +160,60 @@ clone.load_state_dict(torch.load('mlp.params'))
 clone.eval()
 ```
 
+### GPU
+
+```python
+import torch
+from torch import nn
+
+torch.device('cpu'), torch.device('cuda'), torch.device('cuda:1')
+# 查询可用数量
+torch.cuda.device_count()
+```
+
+检测gpu
+
+```python
+def try_gpu(i=0):  #@save
+    """如果存在，则返回gpu(i)，否则返回cpu()"""
+    if torch.cuda.device_count() >= i + 1:
+        return torch.device(f'cuda:{i}')
+    return torch.device('cpu')
+
+def try_all_gpus():  #@save
+    """返回所有可用的GPU，如果没有GPU，则返回[cpu(),]"""
+    devices = [torch.device(f'cuda:{i}')
+             for i in range(torch.cuda.device_count())]
+    return devices if devices else [torch.device('cpu')]
+
+try_gpu(), try_gpu(10), try_all_gpus()
+```
+
+查询tensor所在设备
+
+```python
+x = torch.tensor([1, 2, 3])
+x.device
+```
+
+存储在GPU上
+
+```python
+X = torch.ones(2, 3, device=try_gpu())
+X
+```
+
+## 卷积神经网络
+
+### 卷积层
+
+### 卷积核
+
+### 填充
+
+### 步幅
+
+### 通道
+
+### 多输入多输出
+
